@@ -41,9 +41,10 @@ export default function Signup() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 p-6">
-      <div className="w-full max-w-md bg-white rounded-lg shadow-md p-8">
-        <h2 className="text-2xl font-bold mb-6 text-center">Registra tu restaurante</h2>
+  <div className="min-h-screen flex items-center justify-center bg-gray-50 p-6">
+    <div className="w-full max-w-md bg-white rounded-lg shadow-md p-8">
+      <img src="/logo.png" alt="Logo ¿Dónde Como Hoy?" className="w-48 mx-auto mb-6" />
+      <h2 className="text-2xl font-bold mb-6 text-center">Registra tu restaurante</h2>
         <form onSubmit={handleSubmit} className="space-y-4">
           <input
             type="text"
