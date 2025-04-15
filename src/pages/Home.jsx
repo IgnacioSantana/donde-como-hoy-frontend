@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 export default function Home() {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center px-6 text-center bg-white text-gray-800">
-      <img src="/logo.png" alt="Logo ¿Dónde Como Hoy?" className="w-32 mb-6" />
+      <img src="/logo.png" alt="Logo ¿Dónde Como Hoy?" className="w-48 mb-6" />
       <div className="flex flex-col sm:flex-row justify-center gap-4">
         <Link
           to="/login"
