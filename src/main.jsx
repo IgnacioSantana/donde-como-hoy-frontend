@@ -5,6 +5,9 @@ import './index.css'
 
 import App from './App'
 import Signup from './pages/Signup'
+import TestRegistro from './pages/TestRegistro';
+
+<Route path="/test" element={<TestRegistro />} />
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
