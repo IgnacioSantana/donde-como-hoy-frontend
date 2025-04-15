@@ -75,12 +75,14 @@ export default function Signup() {
           />
           <button
             type="submit"
-            className="w-full bg-black text-white py-2 rounded hover:bg-gray-800 transition"
+            className={`w-full py-2 rounded font-semibold transition ${
+              mensaje === "Enviando..." ? "bg-gray-400 text-white" : "bg-black text-white hover:bg-gray-800"
+            }`}
+            disabled={mensaje === "Enviando..."}
           >
-            Registrarse
-          </button>
+            {mensaje === "Enviando..." ? "Enviando..." : "Registrarse"}
+          </ button>
         </form>
-        {mensaje && <p className="mt-4 text-center text-sm text-green-600">{mensaje}</p>}
       </div>
     </div>
   );
