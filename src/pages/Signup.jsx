@@ -9,7 +9,7 @@ export default function Signup() {
   });
 
   const [mensaje, setMensaje] = useState("");
-  const [tipoMensaje, setTipoMensaje] = useState(""); // "exito" o "error"
+  const [tipoMensaje, setTipoMensaje] = useState("");
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -80,21 +80,35 @@ export default function Signup() {
             required
             className="w-full border border-gray-300 rounded px-4 py-2"
           />
-          <button
-            type="submit"
-            className={`w-full py-2 rounded font-semibold transition ${
-              mensaje === "Enviando..." ? "bg-gray-400 text-white" : "bg-black text-white hover:bg-gray-800"
-            }`}
-            disabled={mensaje === "Enviando..."}
-          >
-            {mensaje === "Enviando..." ? "Enviando..." : "Registrarse"}
-          </button>
+          
+          {/* Botones lado a lado */}
+          <div className="flex flex-col sm:flex-row gap-4 mt-2">
+            <button
+              type="submit"
+              className={`w-full py-2 rounded font-semibold transition ${
+                mensaje === "Enviando..." ? "bg-gray-400 text-white" : "bg-black text-white hover:bg-gray-800"
+              }`}
+              disabled={mensaje === "Enviando..."}
+            >
+              {mensaje === "Enviando..." ? "Enviando..." : "Registrarse"}
+            </button>
+            <a
+              href="/login"
+              className="w-full text-center border border-black text-black py-2 rounded font-semibold hover:bg-gray-100 transition"
+            >
+              Iniciar sesión
+            </a>
+          </div>
 
-          {/* mensaje debajo del botón */}
+          {/* mensaje debajo */}
           {mensaje && (
             <p
               className={`text-sm text-center mt-2 ${
-                tipoMensaje === "exito" ? "text-green-600" : tipoMensaje === "error" ? "text-red-600" : "text-gray-600"
+                tipoMensaje === "exito"
+                  ? "text-green-600"
+                  : tipoMensaje === "error"
+                  ? "text-red-600"
+                  : "text-gray-600"
               }`}
             >
               {mensaje}
