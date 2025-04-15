@@ -1,80 +1,85 @@
-
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 export default function Signup() {
-  const [nombre, setNombre] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [formulario, setFormulario] = useState({
+    nombre: "",
+    email: "",
+    password: ""
+  });
+
   const [mensaje, setMensaje] = useState("");
   const navigate = useNavigate();
 
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormulario({ ...formulario, [name]: value });
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setMensaje("");
+    setMensaje("Enviando...");
 
     try {
       const response = await fetch("https://donde-como-hoy-backend.onrender.com/restaurantes", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ nombre, email, password }),
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(formulario)
       });
 
       if (response.ok) {
         setMensaje("✅ Restaurante registrado correctamente.");
-        setTimeout(() => navigate("/login"), 1500);
+        setTimeout(() => navigate("/login"), 2000);
       } else {
         setMensaje("❌ Error al registrar el restaurante.");
       }
     } catch (error) {
-      console.error("Error:", error);
-      setMensaje("❌ Error de conexión.");
+      setMensaje("❌ Error de conexión con el servidor.");
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
-      <div className="max-w-md w-full bg-white p-6 rounded-lg shadow">
-        <h2 className="text-2xl font-bold mb-6 text-center">Registro de restaurante</h2>
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 p-6">
+      <div className="w-full max-w-md bg-white rounded-lg shadow-md p-8">
+        <h2 className="text-2xl font-bold mb-6 text-center">Registra tu restaurante</h2>
         <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium">Nombre del restaurante</label>
-            <input
-              type="text"
-              value={nombre}
-              onChange={(e) => setNombre(e.target.value)}
-              className="w-full border px-3 py-2 rounded"
-              required
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium">Email</label>
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full border px-3 py-2 rounded"
-              required
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium">Contraseña</label>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full border px-3 py-2 rounded"
-              required
-            />
-          </div>
+          <input
+            type="text"
+            name="nombre"
+            placeholder="Nombre del restaurante"
+            value={formulario.nombre}
+            onChange={handleChange}
+            required
+            className="w-full border border-gray-300 rounded px-4 py-2"
+          />
+          <input
+            type="email"
+            name="email"
+            placeholder="Correo electrónico"
+            value={formulario.email}
+            onChange={handleChange}
+            required
+            className="w-full border border-gray-300 rounded px-4 py-2"
+          />
+          <input
+            type="password"
+            name="password"
+            placeholder="Contraseña"
+            value={formulario.password}
+            onChange={handleChange}
+            required
+            className="w-full border border-gray-300 rounded px-4 py-2"
+          />
           <button
             type="submit"
-            className="w-full bg-black text-white py-2 rounded hover:opacity-90 font-semibold"
+            className="w-full bg-black text-white py-2 rounded hover:bg-gray-800 transition"
           >
             Registrarse
           </button>
         </form>
-        {mensaje && <p className="mt-4 text-center text-green-600 text-sm">{mensaje}</p>}
+        {mensaje && <p className="mt-4 text-center text-sm text-green-600">{mensaje}</p>}
       </div>
     </div>
   );
