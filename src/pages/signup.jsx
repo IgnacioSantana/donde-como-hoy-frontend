@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-export default function signup() {
+export default function Signup() {
   const [formulario, setFormulario] = useState({
     nombre: "",
     email: "",
