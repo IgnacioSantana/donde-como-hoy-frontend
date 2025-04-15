@@ -6,6 +6,8 @@ import App from './App'
 import Signup from './pages/Signup'
 import TestRegistro from './pages/TestRegistro';
 import Panel from './pages/Panel'; // arriba con los imports
+import RutaProtegida from './components/RutaProtegida';
+
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
