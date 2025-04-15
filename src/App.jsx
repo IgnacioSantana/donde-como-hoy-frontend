@@ -1,10 +1,22 @@
 export default function App() {
   return (
-    <div className="text-center mt-10">
-      <img src="/logo.png" alt="Logo" className="mx-auto w-48 mb-6" />
-      <div className="space-x-4">
-        <a href="/login">Iniciar sesión</a>
-        <a href="/signup">Registra tu restaurante</a>
+    <div className="min-h-screen flex items-center justify-center bg-white text-center p-8">
+      <div>
+        <img src="/logo.png" alt="Logo Dónde Como Hoy" className="mx-auto w-64 mb-6" />
+        <div className="space-x-4">
+          <a
+            href="/login"
+            className="bg-black text-white px-6 py-2 rounded-full font-semibold hover:bg-gray-800 transition"
+          >
+            Iniciar sesión
+          </a>
+          <a
+            href="/signup"
+            className="bg-white border border-black text-black px-6 py-2 rounded-full font-semibold hover:bg-gray-100 transition"
+          >
+            Registra tu restaurante
+          </a>
+        </div>
       </div>
     </div>
   );
