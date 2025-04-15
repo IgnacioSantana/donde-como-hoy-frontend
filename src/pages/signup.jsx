@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-export default function Signup() {
+export default function signup() {
   const [formulario, setFormulario] = useState({
     nombre: "",
     email: "",
     password: ""
   });
+
   const [mensaje, setMensaje] = useState("");
   const navigate = useNavigate();
 
@@ -17,17 +18,20 @@ export default function Signup() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setMensaje("Enviando...");
 
     try {
       const response = await fetch("https://donde-como-hoy-backend.onrender.com/restaurantes", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json"
+        },
         body: JSON.stringify(formulario)
       });
 
       if (response.ok) {
         setMensaje("✅ Restaurante registrado correctamente.");
-        setTimeout(() => navigate("/login"), 1500);
+        setTimeout(() => navigate("/login"), 2000);
       } else {
         setMensaje("❌ Error al registrar el restaurante.");
       }
@@ -39,7 +43,7 @@ export default function Signup() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 p-6">
       <div className="w-full max-w-md bg-white rounded-lg shadow-md p-8">
-        <h2 className="text-2xl font-bold mb-6 text-center">Registro de Restaurante</h2>
+        <h2 className="text-2xl font-bold mb-6 text-center">Registra tu restaurante</h2>
         <form onSubmit={handleSubmit} className="space-y-4">
           <input
             type="text"
