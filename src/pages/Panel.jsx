@@ -42,4 +42,13 @@ export default function Panel() {
       </div>
     </div>
   );
+  <Route
+  path="/panel"
+  element={
+    <RutaProtegida>
+      <Panel />
+    </RutaProtegida>
+  }
+/>
+
 }
