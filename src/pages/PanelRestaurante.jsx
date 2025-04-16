@@ -130,3 +130,5 @@ export default function App() {
     </BrowserRouter>
   );
 }
+// Forzar redeploy para Render
+
