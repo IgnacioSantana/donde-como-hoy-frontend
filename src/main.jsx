@@ -6,7 +6,7 @@ import './index.css';
 import App from './App';
 import Signup from './pages/Signup';
 import Login from './pages/Login';
-import Panel from './pages/Panel';
+import Panel from './pages/PanelRestaurante';
 import RutaProtegida from './components/RutaProtegida';
 import TestRegistro from './pages/TestRegistro'; // si lo seguís usando
 
