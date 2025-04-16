@@ -1,32 +1,41 @@
-
 import { useEffect, useState, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { BrowserRouter, useNavigate } from "react-router-dom";
 import Calendar from "react-calendar";
 import 'react-calendar/dist/Calendar.css';
 
-export default function PanelRestaurante() {
+function PanelRestaurante() {
   const navigate = useNavigate();
   const [restaurante, setRestaurante] = useState(null);
   const [mensaje, setMensaje] = useState("");
   const [posicionY, setPosicionY] = useState(50);
   const [imagen, setImagen] = useState(localStorage.getItem("imagen") || "https://images.unsplash.com/photo-1600891964599-f61ba0e24092?auto=format&fit=crop&w=1650&q=80");
   const [fechaSeleccionada, setFechaSeleccionada] = useState(new Date());
-  const [menus, setMenus] = useState({});
+  const [menuDelDia, setMenuDelDia] = useState(null);
 
   const contenedorImagen = useRef(null);
   const arrastrando = useRef(false);
 
   useEffect(() => {
     const datos = localStorage.getItem("restaurante");
-    if (!datos) {
-      navigate("/login");
-    } else {
+    if (datos) {
       setRestaurante(JSON.parse(datos));
+    } else {
+      navigate("/login");
     }
 
     const posGuardada = localStorage.getItem("posicionY");
     if (posGuardada) setPosicionY(Number(posGuardada));
   }, [navigate]);
+
+  useEffect(() => {
+    if (!restaurante) return;
+    const fechaKey = fechaSeleccionada.toISOString().split("T")[0];
+
+    fetch(`https://donde-como-hoy-backend.onrender.com/menus/${restaurante._id}/${fechaKey}`)
+      .then(res => res.ok ? res.json() : null)
+      .then(data => setMenuDelDia(data))
+      .catch(() => setMenuDelDia(null));
+  }, [fechaSeleccionada, restaurante]);
 
   const handleDrop = (e) => {
     e.preventDefault();
@@ -52,18 +61,17 @@ export default function PanelRestaurante() {
   };
 
   const fechaKey = fechaSeleccionada.toISOString().split("T")[0];
-  const menuDelDia = menus[fechaKey];
-
-  if (!restaurante) return null;
 
   return (
-    <div className="min-h-screen bg-white text-gray-800 px-4 py-10">
+    <div className="min-h-screen bg-gradient-to-b from-white via-gray-50 to-gray-100 text-gray-800 px-4 py-10">
       <div className="max-w-6xl mx-auto">
-        <div className="flex justify-between items-center mb-2">
-          <h1 className="text-3xl font-extrabold">Bienvenido, {restaurante.nombre}</h1>
-          <a href="/crear-menu" className="bg-black text-white px-4 py-2 rounded font-semibold hover:bg-gray-800 transition">Crear Menú</a>
+        <img src="/logo.png" alt="Logo ¿Dónde Como Hoy?" className="w-40 mx-auto mb-6" />
+
+        <div className="flex justify-between items-center mb-6">
+          <h1 className="text-4xl font-extrabold text-gray-900">Bienvenido, {restaurante?.nombre}</h1>
+          <a href="/crear-menu" className="bg-black text-white px-5 py-2 rounded-full font-semibold hover:bg-gray-800 transition">+ Crear Menú</a>
         </div>
-        <p className="mb-4 text-gray-600">Aquí puedes crear y gestionar tus menús del día.</p>
+        <p className="mb-6 text-gray-600 text-lg">Administra tu restaurante y tus menús de forma fácil y rápida.</p>
 
         <div
           ref={contenedorImagen}
@@ -73,7 +81,7 @@ export default function PanelRestaurante() {
           onMouseUp={() => arrastrando.current = false}
           onMouseLeave={() => arrastrando.current = false}
           onMouseMove={handleMouseMove}
-          className="mb-8 w-full h-64 overflow-hidden rounded-lg border-2 border-dashed border-gray-300 relative cursor-grab"
+          className="mb-10 w-full h-64 overflow-hidden rounded-xl border-2 border-dashed border-gray-300 relative cursor-grab shadow-sm"
         >
           <img
             src={imagen}
@@ -84,25 +92,27 @@ export default function PanelRestaurante() {
           />
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-          <div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+          <div className="bg-white rounded-xl shadow p-6 border border-gray-200">
+            <h3 className="text-lg font-semibold mb-4">📅 Selecciona una fecha</h3>
             <Calendar
               onChange={setFechaSeleccionada}
               value={fechaSeleccionada}
-              className="rounded-lg shadow border border-gray-200 p-2"
+              className="rounded-lg overflow-hidden"
             />
           </div>
-          <div className="bg-gray-50 p-4 rounded-lg shadow border border-gray-200">
-            <h2 className="text-lg font-bold mb-3">Menú del día: {fechaKey}</h2>
+
+          <div className="bg-white rounded-xl shadow p-6 border border-gray-200">
+            <h2 className="text-xl font-bold mb-3">🧾 Menú del día: <span className="font-mono">{fechaKey}</span></h2>
             {menuDelDia ? (
-              <div className="space-y-2">
-                <p><strong>Precio:</strong> {menuDelDia.precio}€</p>
-                <p><strong>Primeros:</strong> {menuDelDia.primeros.join(', ')}</p>
-                <p><strong>Segundos:</strong> {menuDelDia.segundos.join(', ')}</p>
-                <p><strong>Incluye:</strong> {Object.entries(menuDelDia.incluye).filter(([, val]) => val).map(([k]) => k).join(', ') || 'Nada'}</p>
+              <div className="space-y-3 text-sm">
+                <p><span className="font-semibold">💶 Precio:</span> {menuDelDia.precio}€</p>
+                <p><span className="font-semibold">🥗 Primeros:</span> {menuDelDia.primeros.join(', ')}</p>
+                <p><span className="font-semibold">🍖 Segundos:</span> {menuDelDia.segundos.join(', ')}</p>
+                <p><span className="font-semibold">🎁 Incluye:</span> {Object.entries(menuDelDia.incluye).filter(([, val]) => val).map(([k]) => k).join(', ') || 'Nada'}</p>
               </div>
             ) : (
-              <p className="text-sm text-gray-500">Menú no disponible para esta fecha.</p>
+              <p className="text-sm text-gray-500 italic">Menú no disponible para esta fecha.</p>
             )}
           </div>
         </div>
@@ -110,5 +120,13 @@ export default function PanelRestaurante() {
         {mensaje && <p className="mt-6 text-center text-sm text-green-600">{mensaje}</p>}
       </div>
     </div>
+  );
+}
+
+export default function App() {
+  return (
+    <BrowserRouter>
+      <PanelRestaurante />
+    </BrowserRouter>
   );
 }
