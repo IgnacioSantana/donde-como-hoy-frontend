@@ -123,10 +123,4 @@ function PanelRestaurante() {
   );
 }
 
-export default function App() {
-  return (
-    <BrowserRouter>
-      <PanelRestaurante />
-    </BrowserRouter>
-  );
-}
+export default PanelRestaurante;
