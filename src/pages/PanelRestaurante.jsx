@@ -16,6 +16,7 @@ function PanelRestaurante() {
 
   const contenedorImagen = useRef(null);
   const arrastrando = useRef(false);
+  const inputArchivo = useRef(null); // NUEVO
 
   useEffect(() => {
     const datos = localStorage.getItem("restaurante");
@@ -81,24 +82,50 @@ function PanelRestaurante() {
         </div>
         <p className="mb-6 text-gray-600 text-lg">Administra tu restaurante y tus menús de forma fácil y rápida.</p>
 
-        <div
-          ref={contenedorImagen}
-          onDrop={handleDrop}
-          onDragOver={(e) => e.preventDefault()}
-          onMouseDown={() => arrastrando.current = true}
-          onMouseUp={() => arrastrando.current = false}
-          onMouseLeave={() => arrastrando.current = false}
-          onMouseMove={handleMouseMove}
-          className="mb-10 w-full h-64 overflow-hidden rounded-xl border-2 border-dashed border-gray-300 relative cursor-grab shadow-sm"
-        >
-          <img
-            src={imagen}
-            alt="Imagen de portada"
-            className="w-full h-full object-cover"
-            style={{ objectPosition: `center ${posicionY}%` }}
-            draggable={false}
-          />
-        </div>
+       <div
+  ref={contenedorImagen}
+  onDrop={handleDrop}
+  onDragOver={(e) => e.preventDefault()}
+  onMouseDown={() => arrastrando.current = true}
+  onMouseUp={() => arrastrando.current = false}
+  onMouseLeave={() => arrastrando.current = false}
+  onMouseMove={handleMouseMove}
+  onClick={() => inputArchivo.current?.click()} // para seleccionar imagen con click
+  className="mb-10 w-full h-64 overflow-hidden rounded-xl border-2 border-dashed border-gray-300 relative cursor-pointer shadow-sm flex items-center justify-center bg-gray-50"
+>
+  {imagen ? (
+    <img
+      src={imagen}
+      alt="Imagen de portada"
+      className="w-full h-full object-cover"
+      style={{ objectPosition: `center ${posicionY}%` }}
+      draggable={false}
+    />
+  ) : (
+    <div className="text-gray-400 text-sm text-center">
+      <p>Haz clic o arrastra una imagen para subirla</p>
+    </div>
+  )}
+
+  {/* INPUT DE ARCHIVO OCULTO */}
+  <input
+    type="file"
+    accept="image/*"
+    ref={inputArchivo}
+    onChange={(e) => {
+      const file = e.target.files[0];
+      if (file && file.type.startsWith("image/")) {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          setImagen(reader.result);
+          localStorage.setItem("imagen", reader.result);
+        };
+        reader.readAsDataURL(file);
+      }
+    }}
+    className="hidden"
+  />
+</div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
           <div className="bg-white rounded-xl shadow p-6 border border-gray-200">
