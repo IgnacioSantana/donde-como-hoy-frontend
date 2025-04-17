@@ -92,12 +92,12 @@ export default function Signup() {
             >
               {mensaje === "Enviando..." ? "Enviando..." : "Registrarse"}
             </button>
-            <a
-              href="/login"
+            <Link
+              to="/login"
               className="w-full text-center border border-black text-black py-2 rounded font-semibold hover:bg-gray-100 transition"
             >
               Iniciar sesión
-            </a>
+            </Link>
           </div>
 
           {/* mensaje debajo */}
