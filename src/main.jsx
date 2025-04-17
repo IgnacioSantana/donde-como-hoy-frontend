@@ -8,7 +8,7 @@ import Signup from './pages/Signup';
 import Login from './pages/Login';
 import Panel from './pages/PanelRestaurante';
 import RutaProtegida from './components/RutaProtegida';
-import TestRegistro from './pages/TestRegistro'; // si lo seguís usando
+import CrearMenu from './pages/CrearMenu';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
@@ -25,6 +25,14 @@ ReactDOM.createRoot(document.getElementById('root')).render(
             </RutaProtegida>
           }
         />
+        <Route
+  path="/crear-menu"
+  element={
+    <RutaProtegida>
+      <CrearMenu />
+    </RutaProtegida>
+  }
+/>
         <Route path="/test" element={<TestRegistro />} />
       </Routes>
     </BrowserRouter>
