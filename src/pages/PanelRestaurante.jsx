@@ -94,13 +94,21 @@ function PanelRestaurante() {
   className="mb-10 w-full h-64 overflow-hidden rounded-xl border-2 border-dashed border-gray-300 relative cursor-pointer shadow-sm flex items-center justify-center bg-gray-50"
 >
   {imagen ? (
-    <img
-      src={imagen}
-      alt="Imagen de portada"
-      className="w-full h-full object-cover"
-      style={{ objectPosition: `center ${posicionY}%` }}
-      draggable={false}
-    />
+    {imagen ? (
+  <img
+    src={imagen}
+    alt="Imagen de portada"
+    className="w-full h-full object-cover"
+    style={{ objectPosition: `center ${posicionY}%` }}
+    draggable={false}
+  />
+) : (
+  <div className="flex flex-col items-center justify-center w-full h-full text-gray-400">
+    <ArrowUpTrayIcon className="w-10 h-10 mb-2" />
+    <p className="text-sm">Arrastra una imagen o haz clic para subir</p>
+  </div>
+)}
+
   ) : (
     <div className="text-gray-400 text-sm text-center">
       <p>Haz clic o arrastra una imagen para subirla</p>
