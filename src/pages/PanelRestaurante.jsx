@@ -51,6 +51,18 @@ function PanelRestaurante() {
       };
       reader.readAsDataURL(file);
     }
+    const handleArchivoManual = (e) => {
+  const file = e.target.files[0];
+  if (file && file.type.startsWith("image/")) {
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setImagen(reader.result);
+      localStorage.setItem("imagen", reader.result);
+    };
+    reader.readAsDataURL(file);
+  }
+};
+
   };
 
   const handleMouseMove = (e) => {
@@ -82,16 +94,16 @@ function PanelRestaurante() {
         </div>
         <p className="mb-6 text-gray-600 text-lg">Administra tu restaurante y tus menús de forma fácil y rápida.</p>
 
-       <div
+      <div
   ref={contenedorImagen}
+  onClick={() => inputArchivo.current?.click()}
   onDrop={handleDrop}
   onDragOver={(e) => e.preventDefault()}
   onMouseDown={() => arrastrando.current = true}
   onMouseUp={() => arrastrando.current = false}
   onMouseLeave={() => arrastrando.current = false}
   onMouseMove={handleMouseMove}
-  onClick={() => inputArchivo.current?.click()} // para seleccionar imagen con click
-  className="mb-10 w-full h-64 overflow-hidden rounded-xl border-2 border-dashed border-gray-300 relative cursor-pointer shadow-sm flex items-center justify-center bg-gray-50"
+  className="mb-10 w-full h-64 overflow-hidden rounded-xl border-2 border-dashed border-gray-300 relative cursor-pointer shadow-sm"
 >
   {imagen ? (
     {imagen ? (
@@ -101,6 +113,13 @@ function PanelRestaurante() {
     className="w-full h-full object-cover"
     style={{ objectPosition: `center ${posicionY}%` }}
     draggable={false}
+    <input
+  type="file"
+  accept="image/*"
+  ref={inputArchivo}
+  onChange={handleArchivoManual}
+  className="hidden"
+  />
   />
 ) : (
   <div className="flex flex-col items-center justify-center w-full h-full text-gray-400">
