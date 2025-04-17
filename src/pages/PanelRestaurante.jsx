@@ -2,6 +2,8 @@ import { useEffect, useState, useRef } from "react";
 import { BrowserRouter, useNavigate } from "react-router-dom";
 import Calendar from "react-calendar";
 import 'react-calendar/dist/Calendar.css';
+import { Link } from "react-router-dom";
+
 
 function PanelRestaurante() {
   const navigate = useNavigate();
@@ -69,7 +71,13 @@ function PanelRestaurante() {
 
         <div className="flex justify-between items-center mb-6">
           <h1 className="text-4xl font-extrabold text-gray-900">Bienvenido, {restaurante?.nombre}</h1>
-          <a href="/crear-menu" className="bg-black text-white px-5 py-2 rounded-full font-semibold hover:bg-gray-800 transition">+ Crear Menú</a>
+          <Link
+            to="/crear-menu"
+            className="bg-black text-white px-5 py-2 rounded-full font-semibold hover:bg-gray-800 transition"
+          >
+              + Crear Menú
+          </Link>
+
         </div>
         <p className="mb-6 text-gray-600 text-lg">Administra tu restaurante y tus menús de forma fácil y rápida.</p>
 
