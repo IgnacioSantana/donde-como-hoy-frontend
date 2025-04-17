@@ -65,7 +65,7 @@ function PanelRestaurante() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-white via-gray-50 to-gray-100 text-gray-800 px-4 py-10">
       <div className="max-w-6xl mx-auto">
-        <img src="/logo.png" alt="Logo ¿Dónde Como Hoy?" className="w-80 mx-auto mb-12" />
+        <img src="/logo.png" alt="Logo ¿Dónde Como Hoy?" className="w-40 mx-auto mb-6" />
 
         <div className="flex justify-between items-center mb-6">
           <h1 className="text-4xl font-extrabold text-gray-900">Bienvenido, {restaurante?.nombre}</h1>
