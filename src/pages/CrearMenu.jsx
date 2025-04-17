@@ -134,15 +134,27 @@ function CrearMenu() {
             </div>
           </div>
 
-          <button
-            type="submit"
-            className="w-full bg-black text-white py-2 rounded hover:bg-gray-800 transition"
-          >
-            Guardar Menú
-          </button>
-        </form>
+<div className="flex flex-col sm:flex-row gap-4 mt-6">
+  <button
+    type="submit"
+    className="w-full sm:w-auto bg-black text-white px-6 py-2 rounded-full font-semibold hover:bg-gray-800 transition"
+  >
+    Guardar Menú
+  </button>
 
-        {mensaje && <p className="mt-4 text-center text-green-600">{mensaje}</p>}
+  <button
+    type="button"
+    onClick={() => navigate("/panel")}
+    className="w-full sm:w-auto border border-black text-black px-6 py-2 rounded-full font-semibold hover:bg-gray-100 transition"
+  >
+    ← Volver al panel
+  </button>
+</div>
+
+{mensaje && (
+  <p className="mt-4 text-center text-green-600">{mensaje}</p>
+)}
+        
         <div className="text-center mt-4">
           <button
             type="button"
