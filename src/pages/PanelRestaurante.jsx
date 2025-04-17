@@ -1,8 +1,7 @@
 import { useEffect, useState, useRef } from "react";
-import { BrowserRouter, useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import Calendar from "react-calendar";
 import 'react-calendar/dist/Calendar.css';
-import { Link } from "react-router-dom";
 import { ArrowUpTrayIcon } from "@heroicons/react/24/outline";
 
 function PanelRestaurante() {
@@ -10,13 +9,13 @@ function PanelRestaurante() {
   const [restaurante, setRestaurante] = useState(null);
   const [mensaje, setMensaje] = useState("");
   const [posicionY, setPosicionY] = useState(50);
-  const [imagen, setImagen] = useState(localStorage.getItem("imagen") || "https://images.unsplash.com/photo-1600891964599-f61ba0e24092?auto=format&fit=crop&w=1650&q=80");
+  const [imagen, setImagen] = useState(localStorage.getItem("imagen") || "");
   const [fechaSeleccionada, setFechaSeleccionada] = useState(new Date());
   const [menuDelDia, setMenuDelDia] = useState(null);
 
   const contenedorImagen = useRef(null);
   const arrastrando = useRef(false);
-  const inputArchivo = useRef(null); // NUEVO
+  const inputArchivo = useRef(null);
 
   useEffect(() => {
     const datos = localStorage.getItem("restaurante");
@@ -51,18 +50,18 @@ function PanelRestaurante() {
       };
       reader.readAsDataURL(file);
     }
-    const handleArchivoManual = (e) => {
-  const file = e.target.files[0];
-  if (file && file.type.startsWith("image/")) {
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      setImagen(reader.result);
-      localStorage.setItem("imagen", reader.result);
-    };
-    reader.readAsDataURL(file);
-  }
-};
+  };
 
+  const handleArchivoManual = (e) => {
+    const file = e.target.files[0];
+    if (file && file.type.startsWith("image/")) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagen(reader.result);
+        localStorage.setItem("imagen", reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
   const handleMouseMove = (e) => {
@@ -88,71 +87,46 @@ function PanelRestaurante() {
             to="/crear-menu"
             className="bg-black text-white px-5 py-2 rounded-full font-semibold hover:bg-gray-800 transition"
           >
-              + Crear Menú
+            + Crear Menú
           </Link>
-
         </div>
+
         <p className="mb-6 text-gray-600 text-lg">Administra tu restaurante y tus menús de forma fácil y rápida.</p>
 
-      <div
-  ref={contenedorImagen}
-  onClick={() => inputArchivo.current?.click()}
-  onDrop={handleDrop}
-  onDragOver={(e) => e.preventDefault()}
-  onMouseDown={() => arrastrando.current = true}
-  onMouseUp={() => arrastrando.current = false}
-  onMouseLeave={() => arrastrando.current = false}
-  onMouseMove={handleMouseMove}
-  className="mb-10 w-full h-64 overflow-hidden rounded-xl border-2 border-dashed border-gray-300 relative cursor-pointer shadow-sm"
->
-  {imagen ? (
-    {imagen ? (
-  <img
-    src={imagen}
-    alt="Imagen de portada"
-    className="w-full h-full object-cover"
-    style={{ objectPosition: `center ${posicionY}%` }}
-    draggable={false}
-    <input
-  type="file"
-  accept="image/*"
-  ref={inputArchivo}
-  onChange={handleArchivoManual}
-  className="hidden"
-  />
-  />
-) : (
-  <div className="flex flex-col items-center justify-center w-full h-full text-gray-400">
-    <ArrowUpTrayIcon className="w-10 h-10 mb-2" />
-    <p className="text-sm">Arrastra una imagen o haz clic para subir</p>
-  </div>
-)}
+        <div
+          ref={contenedorImagen}
+          onClick={() => inputArchivo.current?.click()}
+          onDrop={handleDrop}
+          onDragOver={(e) => e.preventDefault()}
+          onMouseDown={() => arrastrando.current = true}
+          onMouseUp={() => arrastrando.current = false}
+          onMouseLeave={() => arrastrando.current = false}
+          onMouseMove={handleMouseMove}
+          className="mb-10 w-full h-64 overflow-hidden rounded-xl border-2 border-dashed border-gray-300 relative cursor-pointer shadow-sm"
+        >
+          {imagen ? (
+            <img
+              src={imagen}
+              alt="Imagen de portada"
+              className="w-full h-full object-cover"
+              style={{ objectPosition: `center ${posicionY}%` }}
+              draggable={false}
+            />
+          ) : (
+            <div className="flex flex-col items-center justify-center w-full h-full text-gray-400">
+              <ArrowUpTrayIcon className="w-10 h-10 mb-2" />
+              <p className="text-sm">Arrastra una imagen o haz clic para subir</p>
+            </div>
+          )}
 
-  ) : (
-    <div className="text-gray-400 text-sm text-center">
-      <p>Haz clic o arrastra una imagen para subirla</p>
-    </div>
-  )}
-
-  {/* INPUT DE ARCHIVO OCULTO */}
-  <input
-    type="file"
-    accept="image/*"
-    ref={inputArchivo}
-    onChange={(e) => {
-      const file = e.target.files[0];
-      if (file && file.type.startsWith("image/")) {
-        const reader = new FileReader();
-        reader.onloadend = () => {
-          setImagen(reader.result);
-          localStorage.setItem("imagen", reader.result);
-        };
-        reader.readAsDataURL(file);
-      }
-    }}
-    className="hidden"
-  />
-</div>
+          <input
+            type="file"
+            accept="image/*"
+            ref={inputArchivo}
+            onChange={handleArchivoManual}
+            className="hidden"
+          />
+        </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
           <div className="bg-white rounded-xl shadow p-6 border border-gray-200">
