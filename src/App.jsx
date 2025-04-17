@@ -1,3 +1,4 @@
+// Forzar redeploy - test de rutas
 import { Link } from 'react-router-dom'; // AGREGALO ARRIBA
 
 export default function App() {
@@ -23,4 +24,3 @@ export default function App() {
     </div>
   );
 }
-// redeploy test
