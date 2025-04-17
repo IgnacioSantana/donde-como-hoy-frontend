@@ -3,7 +3,7 @@ import { BrowserRouter, useNavigate } from "react-router-dom";
 import Calendar from "react-calendar";
 import 'react-calendar/dist/Calendar.css';
 import { Link } from "react-router-dom";
-
+import { ArrowUpTrayIcon } from "@heroicons/react/24/outline";
 
 function PanelRestaurante() {
   const navigate = useNavigate();
