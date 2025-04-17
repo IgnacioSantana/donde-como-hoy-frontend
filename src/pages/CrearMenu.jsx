@@ -143,6 +143,15 @@ function CrearMenu() {
         </form>
 
         {mensaje && <p className="mt-4 text-center text-green-600">{mensaje}</p>}
+        <div className="text-center mt-4">
+          <button
+            type="button"
+            onClick={() => navigate("/panel")}
+            className="text-sm text-blue-600 underline hover:text-blue-800 transition"
+          >
+            ← Volver al panel
+          </button>
+        </div>
       </div>
     </div>
   );
