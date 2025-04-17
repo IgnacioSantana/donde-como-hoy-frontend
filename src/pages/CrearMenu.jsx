@@ -134,36 +134,25 @@ function CrearMenu() {
             </div>
           </div>
 
-<div className="flex flex-col sm:flex-row gap-4 mt-6">
-  <button
-    type="submit"
-    className="w-full sm:w-auto bg-black text-white px-6 py-2 rounded-full font-semibold hover:bg-gray-800 transition"
-  >
-    Guardar Menú
-  </button>
+          {/* BLOQUE DE BOTONES */}
+          <div className="flex flex-col sm:flex-row gap-4">
+            <button
+              type="submit"
+              className="w-full sm:w-auto bg-black text-white px-6 py-2 rounded-full font-semibold hover:bg-gray-800 transition"
+            >
+              Guardar Menú
+            </button>
+            <button
+              type="button"
+              onClick={() => navigate("/panel")}
+              className="w-full sm:w-auto border border-black text-black px-6 py-2 rounded-full font-semibold hover:bg-gray-100 transition"
+            >
+              ← Volver al panel
+            </button>
+          </div>
+        </form>
 
-  <button
-    type="button"
-    onClick={() => navigate("/panel")}
-    className="w-full sm:w-auto border border-black text-black px-6 py-2 rounded-full font-semibold hover:bg-gray-100 transition"
-  >
-    ← Volver al panel
-  </button>
-</div>
-
-{mensaje && (
-  <p className="mt-4 text-center text-green-600">{mensaje}</p>
-)}
-        
-        <div className="text-center mt-4">
-          <button
-            type="button"
-            onClick={() => navigate("/panel")}
-            className="text-sm text-blue-600 underline hover:text-blue-800 transition"
-          >
-            ← Volver al panel
-          </button>
-        </div>
+        {mensaje && <p className="mt-4 text-center text-green-600">{mensaje}</p>}
       </div>
     </div>
   );
