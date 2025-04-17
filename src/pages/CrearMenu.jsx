@@ -148,10 +148,4 @@ function CrearMenu() {
   );
 }
 
-export default function App() {
-  return (
-    <BrowserRouter>
-      <CrearMenu />
-    </BrowserRouter>
-  );
-}
+export default CrearMenu;
