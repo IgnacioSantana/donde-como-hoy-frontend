@@ -89,12 +89,12 @@ export default function Login() {
             >
               {mensaje === "Verificando..." ? "Verificando..." : "Iniciar sesión"}
             </button>
-            <a
-              href="/signup"
+            <Link
+              to="/signup"
               className="w-full text-center border border-black text-black py-2 rounded font-semibold hover:bg-gray-100 transition"
             >
               Registrarse
-            </a>
+            </Link>
           </div>
 
           {mensaje && (
