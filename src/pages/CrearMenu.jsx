@@ -14,19 +14,19 @@ function CrearMenu() {
     e.preventDefault();
 
     const restaurante = JSON.parse(localStorage.getItem("restaurante"));
-    if (!restaurante || !restaurante._id) {
-      setMensaje("❌ Restaurante no autenticado");
-      return;
-    }
+if (!restaurante || (!restaurante._id && !restaurante.id)) {
+  setMensaje("❌ Restaurante no autenticado");
+  return;
+}
 
     const nuevoMenu = {
-      restauranteId: restaurante._id,
-      fecha,
-      precio,
-      primeros: primeros.filter(p => p.trim() !== ""),
-      segundos: segundos.filter(s => s.trim() !== ""),
-      incluye
-    };
+  restauranteId: restaurante._id || restaurante.id,
+  fecha,
+  precio,
+  primeros: primeros.filter(p => p.trim() !== ""),
+  segundos: segundos.filter(s => s.trim() !== ""),
+  incluye
+};
 
     try {
       const response = await fetch("https://donde-como-hoy-backend.onrender.com/menus", {
