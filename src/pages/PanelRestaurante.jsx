@@ -40,29 +40,55 @@ function PanelRestaurante() {
   }, [fechaSeleccionada, restaurante]);
 
   const handleDrop = (e) => {
-    e.preventDefault();
-    const file = e.dataTransfer.files[0];
-    if (file && file.type.startsWith("image/")) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImagen(reader.result);
-        localStorage.setItem("imagen", reader.result);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
+  e.preventDefault();
+  const file = e.dataTransfer.files[0];
+  if (file && file.type.startsWith("image/")) {
+    const reader = new FileReader();
+    reader.onloadend = async () => {
+      const base64 = reader.result;
+      setImagen(base64);
+      localStorage.setItem("imagen", base64);
+
+      if (restaurante && restaurante._id) {
+        try {
+          await fetch(`https://donde-como-hoy-backend.onrender.com/restaurantes/${restaurante._id}/imagen`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ imagen: base64 }),
+          });
+        } catch (error) {
+          console.error("❌ Error al guardar imagen en el backend:", error);
+        }
+      }
+    };
+    reader.readAsDataURL(file);
+  }
+};
 
   const handleArchivoManual = (e) => {
-    const file = e.target.files[0];
-    if (file && file.type.startsWith("image/")) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImagen(reader.result);
-        localStorage.setItem("imagen", reader.result);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
+  const file = e.target.files[0];
+  if (file && file.type.startsWith("image/")) {
+    const reader = new FileReader();
+    reader.onloadend = async () => {
+      const base64 = reader.result;
+      setImagen(base64);
+      localStorage.setItem("imagen", base64);
+
+      if (restaurante && restaurante._id) {
+        try {
+          await fetch(`https://donde-como-hoy-backend.onrender.com/restaurantes/${restaurante._id}/imagen`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ imagen: base64 }),
+          });
+        } catch (error) {
+          console.error("❌ Error al guardar imagen en el backend:", error);
+        }
+      }
+    };
+    reader.readAsDataURL(file);
+  }
+};
 
   const handleMouseMove = (e) => {
     if (arrastrando.current && contenedorImagen.current) {
