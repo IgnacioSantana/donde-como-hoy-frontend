@@ -22,6 +22,8 @@ export default function Login() {
     setTipoMensaje("");
 
     try {
+      console.log("🔐 Enviando datos para login:", formulario);
+
       const response = await fetch("https://donde-como-hoy-backend.onrender.com/restaurantes/login", {
         method: "POST",
         headers: {
@@ -31,31 +33,32 @@ export default function Login() {
       });
 
       if (response.ok) {
-  const data = await response.json();
+        const data = await response.json();
+        console.log("✅ Respuesta del backend:", data);
 
-  localStorage.removeItem("imagen"); // 🔥 Limpia imagen anterior
+        // Limpia imagen previa guardada en otro login
+        localStorage.removeItem("imagen");
 
-  localStorage.setItem("restaurante", JSON.stringify({
-    _id: data.restauranteId,
-    nombre: data.nombre
-  }));
+        // Guarda restaurante en localStorage
+        localStorage.setItem("restaurante", JSON.stringify({
+          _id: data.restauranteId,
+          nombre: data.nombre
+        }));
 
-  setMensaje("✅ Inicio de sesión exitoso.");
-  setTipoMensaje("exito");
+        setMensaje("✅ Inicio de sesión exitoso.");
+        setTipoMensaje("exito");
 
-  setTimeout(() => navigate("/panel"), 1500);
-} else {
-  const errorData = await response.json();
-  const errorMsg = errorData.message || "❌ Credenciales incorrectas.";
-  setMensaje(`❌ ${errorMsg}`);
-  setTipoMensaje("error");
-}
+        setTimeout(() => navigate("/panel"), 1500);
+      } else {
         const errorData = await response.json();
+        console.warn("❌ Error al hacer login:", errorData);
+
         const errorMsg = errorData.message || "❌ Credenciales incorrectas.";
         setMensaje(`❌ ${errorMsg}`);
         setTipoMensaje("error");
       }
     } catch (error) {
+      console.error("❌ Error al conectar con el servidor:", error);
       setMensaje("❌ Error al conectar con el servidor.");
       setTipoMensaje("error");
     }
@@ -105,15 +108,16 @@ export default function Login() {
           </div>
 
           {mensaje && tipoMensaje !== "" && (
-            <p className={`text-sm text-center mt-2 ${
-              tipoMensaje === "exito"
-                ? "text-green-600"
-                : "text-red-600"
-            }`}>
+            <p
+              className={`text-sm text-center mt-2 ${
+                tipoMensaje === "exito"
+                  ? "text-green-600"
+                  : "text-red-600"
+              }`}
+            >
               {mensaje}
             </p>
-            )}
-
+          )}
         </form>
       </div>
     </div>
