@@ -63,7 +63,8 @@ function PanelRestaurante() {
     reader.onloadend = async () => {
       const nuevaImagen = reader.result;
       setImagen(nuevaImagen);
-      localStorage.setItem("imagen", nuevaImagen);
+      // Eliminar esta línea para evitar el QuotaExceededError:
+      // localStorage.setItem("imagen", nuevaImagen);
 
       if (restaurante?._id) {
         await fetch(`https://donde-como-hoy-backend.onrender.com/restaurantes/${restaurante._id}/imagen`, {
