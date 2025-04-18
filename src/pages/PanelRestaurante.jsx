@@ -45,10 +45,6 @@ function PanelRestaurante() {
   if (posGuardada) setPosicionY(Number(posGuardada));
 }, [navigate]);
 
-    const posGuardada = localStorage.getItem("posicionY");
-    if (posGuardada) setPosicionY(Number(posGuardada));
-  }, [navigate]);
-
   useEffect(() => {
     if (!restaurante) return;
     const fechaKey = fechaSeleccionada.toISOString().split("T")[0];
