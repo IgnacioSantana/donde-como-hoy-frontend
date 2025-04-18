@@ -3,6 +3,7 @@ import { useNavigate, Link } from "react-router-dom";
 import Calendar from "react-calendar";
 import 'react-calendar/dist/Calendar.css';
 import { ArrowUpTrayIcon } from "@heroicons/react/24/outline";
+import { CakeIcon, SparklesIcon, BanknotesIcon } from "@heroicons/react/24/solid";
 
 function PanelRestaurante() {
   const navigate = useNavigate();
@@ -122,7 +123,7 @@ function PanelRestaurante() {
     navigate("/login");
   };
 
-  const fechaKey = fechaSeleccionada.toLocaleDateString('sv-SE'); // formato YYYY-MM-DD
+  const fechaKey = fechaSeleccionada.toLocaleDateString('sv-SE');
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-white via-gray-50 to-gray-100 text-gray-800 px-4 py-10">
@@ -131,19 +132,11 @@ function PanelRestaurante() {
 
         <div className="flex flex-col sm:flex-row justify-between items-center mb-6 gap-4 sm:gap-2">
           <h1 className="text-4xl font-extrabold text-gray-900">Bienvenido, {restaurante?.nombre}</h1>
-
           <div className="flex gap-2">
-            <Link
-              to="/crear-menu"
-              className="bg-black text-white px-5 py-2 rounded-full font-semibold hover:bg-gray-800 transition"
-            >
+            <Link to="/crear-menu" className="bg-black text-white px-5 py-2 rounded-full font-semibold hover:bg-gray-800 transition">
               Crear Menú
             </Link>
-
-            <button
-              onClick={handleSalir}
-              className="bg-white text-black border border-gray-300 px-5 py-2 rounded-full font-semibold hover:bg-gray-200 transition"
-            >
+            <button onClick={handleSalir} className="bg-white text-black border border-gray-300 px-5 py-2 rounded-full font-semibold hover:bg-gray-200 transition">
               Salir
             </button>
           </div>
@@ -156,9 +149,9 @@ function PanelRestaurante() {
           onClick={() => inputArchivo.current?.click()}
           onDrop={handleDrop}
           onDragOver={(e) => e.preventDefault()}
-          onMouseDown={() => arrastrando.current = true}
-          onMouseUp={() => arrastrando.current = false}
-          onMouseLeave={() => arrastrando.current = false}
+          onMouseDown={() => (arrastrando.current = true)}
+          onMouseUp={() => (arrastrando.current = false)}
+          onMouseLeave={() => (arrastrando.current = false)}
           onMouseMove={handleMouseMove}
           className="mb-10 w-full h-64 overflow-hidden rounded-xl border-2 border-dashed border-gray-300 relative cursor-pointer shadow-sm"
         >
@@ -196,14 +189,52 @@ function PanelRestaurante() {
             />
           </div>
 
-          <div className="bg-white rounded-xl shadow p-6 border border-gray-200">
-            <h2 className="text-xl font-bold mb-3">🧾 Menú del día: <span className="font-mono">{fechaKey}</span></h2>
+          <div className="bg-white rounded-xl shadow-lg border border-gray-200 px-8 py-6 text-center font-sans">
+            <h2 className="text-2xl font-bold text-gray-800 mb-1">MENÚ DEL DÍA</h2>
+            <p className="text-sm text-gray-500 mb-6">{new Date(fechaSeleccionada).toLocaleDateString("es-ES", { weekday: "long", year: "numeric", month: "long", day: "numeric" })}</p>
+
             {menuDelDia ? (
-              <div className="space-y-3 text-sm">
-                <p><span className="font-semibold">💶 Precio:</span> {menuDelDia.precio}€</p>
-                <p><span className="font-semibold">🥗 Primeros:</span> {menuDelDia.primeros.join(', ')}</p>
-                <p><span className="font-semibold">🍖 Segundos:</span> {menuDelDia.segundos.join(', ')}</p>
-                <p><span className="font-semibold">🎁 Incluye:</span> {Object.entries(menuDelDia.incluye).filter(([, val]) => val).map(([k]) => k).join(', ') || 'Nada'}</p>
+              <div className="space-y-6">
+                <div>
+                  <h3 className="text-lg font-semibold text-indigo-800 uppercase mb-2 flex items-center justify-center gap-1">
+                    <SparklesIcon className="w-5 h-5" /> Entrantes
+                  </h3>
+                  <ul className="space-y-1 text-gray-700">
+                    {menuDelDia.primeros.map((plato, i) => (
+                      <li key={i}>{plato}</li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div>
+                  <h3 className="text-lg font-semibold text-indigo-800 uppercase mb-2 flex items-center justify-center gap-1">
+                    <BanknotesIcon className="w-5 h-5" /> Principal
+                  </h3>
+                  <ul className="space-y-1 text-gray-700">
+                    {menuDelDia.segundos.map((plato, i) => (
+                      <li key={i}>{plato}</li>
+                    ))}
+                  </ul>
+                </div>
+
+                {Object.entries(menuDelDia.incluye).filter(([, val]) => val).length > 0 && (
+                  <div>
+                    <h3 className="text-lg font-semibold text-indigo-800 uppercase mb-2 flex items-center justify-center gap-1">
+                      <CakeIcon className="w-5 h-5" /> Postres / Extras
+                    </h3>
+                    <p className="text-gray-700">
+                      {Object.entries(menuDelDia.incluye)
+                        .filter(([, val]) => val)
+                        .map(([k]) => k.charAt(0).toUpperCase() + k.slice(1))
+                        .join(", ")}
+                    </p>
+                  </div>
+                )}
+
+                <div className="pt-4">
+                  <p className="text-2xl font-bold text-gray-900">{menuDelDia.precio}€</p>
+                  <p className="text-sm text-gray-500 mt-1">Incluye todo lo mencionado</p>
+                </div>
               </div>
             ) : (
               <p className="text-sm text-gray-500 italic">Menú no disponible para esta fecha.</p>
