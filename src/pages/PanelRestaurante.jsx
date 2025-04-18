@@ -116,15 +116,48 @@ function PanelRestaurante() {
       <div className="max-w-6xl mx-auto">
         <img src="/logo.png" alt="Logo ¿Dónde Como Hoy?" className="w-40 mx-auto mb-6" />
 
-        <div className="flex justify-between items-center mb-6">
-          <h1 className="text-4xl font-extrabold text-gray-900">Bienvenido, {restaurante?.nombre}</h1>
-          <Link
-            to="/crear-menu"
-            className="bg-black text-white px-5 py-2 rounded-full font-semibold hover:bg-gray-800 transition"
-          >
-            Crear Menú
-          </Link>
-        </div>
+        <div className="flex flex-col sm:flex-row justify-between items-center mb-6 gap-4 sm:gap-2">
+  <h1 className="text-4xl font-extrabold text-gray-900">Bienvenido, {restaurante?.nombre}</h1>
+
+  <div className="flex gap-2">
+    <button
+      onClick={async () => {
+        if (!restaurante || !imagen) return;
+
+        try {
+          await fetch(`https://donde-como-hoy-backend.onrender.com/restaurantes/${restaurante._id}/imagen`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ imagen }),
+          });
+          setMensaje("✅ Imagen guardada correctamente");
+        } catch (err) {
+          setMensaje("❌ Error al guardar la imagen");
+        }
+      }}
+      className="bg-black text-white px-5 py-2 rounded-full font-semibold hover:bg-gray-800 transition"
+    >
+      Guardar
+    </button>
+
+    <button
+      onClick={() => {
+        localStorage.clear();
+        navigate("/login");
+      }}
+      className="bg-red-600 text-white px-5 py-2 rounded-full font-semibold hover:bg-red-700 transition"
+    >
+      Salir
+    </button>
+
+    <Link
+      to="/crear-menu"
+      className="bg-gray-700 text-white px-5 py-2 rounded-full font-semibold hover:bg-gray-800 transition"
+    >
+      Crear Menú
+    </Link>
+  </div>
+</div>
 
         <p className="mb-6 text-gray-600 text-lg">Administra tu restaurante y tus menús de forma fácil y rápida.</p>
 
