@@ -97,19 +97,16 @@ export default function Login() {
             </Link>
           </div>
 
-          {mensaje && (
-            <p
-              className={`text-sm text-center mt-2 ${
-                tipoMensaje === "exito"
-                  ? "text-green-600"
-                  : tipoMensaje === "error"
-                  ? "text-red-600"
-                  : "text-gray-600"
-              }`}
-            >
+          {mensaje && tipoMensaje !== "" && (
+            <p className={`text-sm text-center mt-2 ${
+              tipoMensaje === "exito"
+                ? "text-green-600"
+                : "text-red-600"
+            }`}>
               {mensaje}
             </p>
-          )}
+            )}
+
         </form>
       </div>
     </div>
