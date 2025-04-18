@@ -23,7 +23,7 @@ function PanelRestaurante() {
   if (datos) {
     const restauranteLocal = JSON.parse(datos);
 
-    fetch(`https://donde-como-hoy-backend.onrender.com/restaurantes/${restauranteLocal.id}`)
+    fetch(`https://donde-como-hoy-backend.onrender.com/restaurantes/${restauranteLocal._id}`)
       .then(res => res.ok ? res.json() : null)
       .then(data => {
         if (data) {
