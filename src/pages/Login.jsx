@@ -44,8 +44,12 @@ export default function Login() {
   setTipoMensaje("exito");
 
   setTimeout(() => navigate("/panel"), 1500);
+} else {
+  const errorData = await response.json();
+  const errorMsg = errorData.message || "❌ Credenciales incorrectas.";
+  setMensaje(`❌ ${errorMsg}`);
+  setTipoMensaje("error");
 }
-    else {
         const errorData = await response.json();
         const errorMsg = errorData.message || "❌ Credenciales incorrectas.";
         setMensaje(`❌ ${errorMsg}`);
