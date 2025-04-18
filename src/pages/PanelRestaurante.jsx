@@ -108,7 +108,7 @@ function PanelRestaurante() {
     }
   };
 
-  const fechaKey = fechaSeleccionada.toISOString().split("T")[0];
+  const fechaKey = fechaSeleccionada.toLocaleDateString('sv-SE'); // formato YYYY-MM-DD
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-white via-gray-50 to-gray-100 text-gray-800 px-4 py-10">
