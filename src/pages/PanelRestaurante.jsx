@@ -3,7 +3,7 @@ import { useNavigate, Link } from "react-router-dom";
 import Calendar from "react-calendar";
 import 'react-calendar/dist/Calendar.css';
 import { ArrowUpTrayIcon } from "@heroicons/react/24/outline";
-import { CakeIcon, SparklesIcon, BanknotesIcon } from "@heroicons/react/24/solid";
+import { BreadSlice, Coffee, Cake, CupSoda } from 'lucide-react';
 import imageCompression from "browser-image-compression";
 
 function PanelRestaurante() {
@@ -57,66 +57,66 @@ function PanelRestaurante() {
   }, [fechaSeleccionada, restaurante]);
 
   const handleDrop = async (e) => {
-  e.preventDefault();
-  const file = e.dataTransfer.files[0];
-  if (file && file.type.startsWith("image/")) {
-    try {
-      const compressedFile = await imageCompression(file, {
-        maxSizeMB: 0.5,
-        maxWidthOrHeight: 1200,
-        useWebWorker: true,
-      });
+    e.preventDefault();
+    const file = e.dataTransfer.files[0];
+    if (file && file.type.startsWith("image/")) {
+      try {
+        const compressedFile = await imageCompression(file, {
+          maxSizeMB: 0.5,
+          maxWidthOrHeight: 1200,
+          useWebWorker: true,
+        });
 
-      const reader = new FileReader();
-      reader.onloadend = async () => {
-        const nuevaImagen = reader.result;
-        setImagen(nuevaImagen);
+        const reader = new FileReader();
+        reader.onloadend = async () => {
+          const nuevaImagen = reader.result;
+          setImagen(nuevaImagen);
 
-        if (restaurante?._id) {
-          await fetch(`https://donde-como-hoy-backend.onrender.com/restaurantes/${restaurante._id}/imagen`, {
-            method: "PUT",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ imagen: nuevaImagen }),
-          });
-        }
-      };
-      reader.readAsDataURL(compressedFile);
-    } catch (error) {
-      console.error("❌ Error al comprimir imagen:", error);
+          if (restaurante?._id) {
+            await fetch(`https://donde-como-hoy-backend.onrender.com/restaurantes/${restaurante._id}/imagen`, {
+              method: "PUT",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ imagen: nuevaImagen }),
+            });
+          }
+        };
+        reader.readAsDataURL(compressedFile);
+      } catch (error) {
+        console.error("❌ Error al comprimir imagen:", error);
+      }
     }
-  }
-};
-  
+  };
+
   const handleArchivoManual = async (e) => {
-  const file = e.target.files[0];
-  if (file && file.type.startsWith("image/")) {
-    try {
-      const compressedFile = await imageCompression(file, {
-        maxSizeMB: 0.5,
-        maxWidthOrHeight: 1200,
-        useWebWorker: true,
-      });
+    const file = e.target.files[0];
+    if (file && file.type.startsWith("image/")) {
+      try {
+        const compressedFile = await imageCompression(file, {
+          maxSizeMB: 0.5,
+          maxWidthOrHeight: 1200,
+          useWebWorker: true,
+        });
 
-      const reader = new FileReader();
-      reader.onloadend = async () => {
-        const nuevaImagen = reader.result;
-        setImagen(nuevaImagen);
+        const reader = new FileReader();
+        reader.onloadend = async () => {
+          const nuevaImagen = reader.result;
+          setImagen(nuevaImagen);
 
-        if (restaurante?._id) {
-          await fetch(`https://donde-como-hoy-backend.onrender.com/restaurantes/${restaurante._id}/imagen`, {
-            method: "PUT",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ imagen: nuevaImagen }),
-          });
-        }
-      };
-      reader.readAsDataURL(compressedFile);
-    } catch (error) {
-      console.error("❌ Error al comprimir imagen:", error);
+          if (restaurante?._id) {
+            await fetch(`https://donde-como-hoy-backend.onrender.com/restaurantes/${restaurante._id}/imagen`, {
+              method: "PUT",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ imagen: nuevaImagen }),
+            });
+          }
+        };
+        reader.readAsDataURL(compressedFile);
+      } catch (error) {
+        console.error("❌ Error al comprimir imagen:", error);
+      }
     }
-  }
-};
-  
+  };
+
   const handleMouseMove = (e) => {
     if (arrastrando.current && contenedorImagen.current) {
       const bounds = contenedorImagen.current.getBoundingClientRect();
@@ -144,8 +144,6 @@ function PanelRestaurante() {
     navigate("/login");
   };
 
-  const fechaKey = fechaSeleccionada.toLocaleDateString('sv-SE');
-
   return (
     <div className="min-h-screen bg-gradient-to-b from-white via-gray-50 to-gray-100 text-gray-800 px-4 py-10">
       <div className="max-w-6xl mx-auto">
@@ -154,12 +152,8 @@ function PanelRestaurante() {
         <div className="flex flex-col sm:flex-row justify-between items-center mb-6 gap-4 sm:gap-2">
           <h1 className="text-4xl font-extrabold text-gray-900">Bienvenido, {restaurante?.nombre}</h1>
           <div className="flex gap-2">
-            <Link to="/crear-menu" className="bg-black text-white px-5 py-2 rounded-full font-semibold hover:bg-gray-800 transition">
-              Crear Menú
-            </Link>
-            <button onClick={handleSalir} className="bg-white text-black border border-gray-300 px-5 py-2 rounded-full font-semibold hover:bg-gray-200 transition">
-              Salir
-            </button>
+            <Link to="/crear-menu" className="bg-black text-white px-5 py-2 rounded-full font-semibold hover:bg-gray-800 transition">Crear Menú</Link>
+            <button onClick={handleSalir} className="bg-white text-black border border-gray-300 px-5 py-2 rounded-full font-semibold hover:bg-gray-200 transition">Salir</button>
           </div>
         </div>
 
@@ -211,51 +205,47 @@ function PanelRestaurante() {
           </div>
 
           <div className="bg-white rounded-xl shadow-lg border border-gray-200 px-8 py-6 text-center font-sans">
-            <h2 className="text-2xl font-bold text-gray-800 mb-1">MENÚ DEL DÍA</h2>
-            <p className="text-sm text-gray-500 mb-6">{new Date(fechaSeleccionada).toLocaleDateString("es-ES", { weekday: "long", year: "numeric", month: "long", day: "numeric" })}</p>
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4">
+              <div>
+                <h2 className="text-2xl font-bold text-gray-900">MENÚ DEL DÍA</h2>
+                <p className="text-sm text-gray-600">
+                  {new Date(fechaSeleccionada).toLocaleDateString("es-ES", {
+                    weekday: "long", year: "numeric", month: "long", day: "numeric"
+                  })}
+                </p>
+              </div>
+              <p className="text-3xl font-extrabold text-gray-900 sm:mt-0 mt-4">
+                {menuDelDia?.precio}€
+              </p>
+            </div>
 
             {menuDelDia ? (
               <div className="space-y-6">
                 <div>
-                  <h3 className="text-lg font-semibold text-indigo-800 uppercase mb-2 flex items-center justify-center gap-1">
-                    <SparklesIcon className="w-5 h-5" /> Entrantes
-                  </h3>
-                  <ul className="space-y-1 text-gray-700">
-                    {menuDelDia.primeros.map((plato, i) => (
-                      <li key={i}>{plato}</li>
-                    ))}
+                  <h3 className="text-lg font-bold text-black border-b border-gray-300 pb-1 inline-block">Primer Plato</h3>
+                  <ul className="space-y-1 text-gray-800 mt-2">
+                    {menuDelDia.primeros.map((plato, i) => <li key={i}>{plato}</li>)}
                   </ul>
                 </div>
 
                 <div>
-                  <h3 className="text-lg font-semibold text-indigo-800 uppercase mb-2 flex items-center justify-center gap-1">
-                    <BanknotesIcon className="w-5 h-5" /> Principal
-                  </h3>
-                  <ul className="space-y-1 text-gray-700">
-                    {menuDelDia.segundos.map((plato, i) => (
-                      <li key={i}>{plato}</li>
-                    ))}
+                  <h3 className="text-lg font-bold text-black border-b border-gray-300 pb-1 inline-block">Segundo Plato</h3>
+                  <ul className="space-y-1 text-gray-800 mt-2">
+                    {menuDelDia.segundos.map((plato, i) => <li key={i}>{plato}</li>)}
                   </ul>
                 </div>
 
                 {Object.entries(menuDelDia.incluye).filter(([, val]) => val).length > 0 && (
                   <div>
-                    <h3 className="text-lg font-semibold text-indigo-800 uppercase mb-2 flex items-center justify-center gap-1">
-                      <CakeIcon className="w-5 h-5" /> Postres / Extras
-                    </h3>
-                    <p className="text-gray-700">
-                      {Object.entries(menuDelDia.incluye)
-                        .filter(([, val]) => val)
-                        .map(([k]) => k.charAt(0).toUpperCase() + k.slice(1))
-                        .join(", ")}
-                    </p>
+                    <h3 className="text-lg font-bold text-black border-b border-gray-300 pb-1 inline-block mb-2">Solo con el menú se incluye:</h3>
+                    <div className="flex justify-center gap-4 text-gray-700 mt-4">
+                      {menuDelDia.incluye.pan && <BreadSlice className="w-6 h-6" />}
+                      {menuDelDia.incluye.bebida && <CupSoda className="w-6 h-6" />}
+                      {menuDelDia.incluye.postre && <Cake className="w-6 h-6" />}
+                      {menuDelDia.incluye.cafe && <Coffee className="w-6 h-6" />}
+                    </div>
                   </div>
                 )}
-
-                <div className="pt-4">
-                  <p className="text-2xl font-bold text-gray-900">{menuDelDia.precio}€</p>
-                  <p className="text-sm text-gray-500 mt-1">Incluye todo lo mencionado</p>
-                </div>
               </div>
             ) : (
               <p className="text-sm text-gray-500 italic">Menú no disponible para esta fecha.</p>
