@@ -31,7 +31,6 @@ function PanelRestaurante() {
           console.log("✅ Restaurante con imagen desde backend:", data);
           if (data.imagen) {
             setImagen(data.imagen);
-            localStorage.setItem("imagen", data.imagen);
           }
         } else {
           navigate("/login");
