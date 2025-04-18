@@ -18,12 +18,32 @@ function PanelRestaurante() {
   const inputArchivo = useRef(null);
 
   useEffect(() => {
-    const datos = localStorage.getItem("restaurante");
-    if (datos) {
-      setRestaurante(JSON.parse(datos));
-    } else {
-      navigate("/login");
-    }
+  const datos = localStorage.getItem("restaurante");
+
+  if (datos) {
+    const restauranteLocal = JSON.parse(datos);
+
+    fetch(`https://donde-como-hoy-backend.onrender.com/restaurantes/${restauranteLocal.id}`)
+      .then(res => res.ok ? res.json() : null)
+      .then(data => {
+        if (data) {
+          setRestaurante(data);
+          if (data.imagen) {
+            setImagen(data.imagen);
+            localStorage.setItem("imagen", data.imagen);
+          }
+        } else {
+          navigate("/login");
+        }
+      })
+      .catch(() => navigate("/login"));
+  } else {
+    navigate("/login");
+  }
+
+  const posGuardada = localStorage.getItem("posicionY");
+  if (posGuardada) setPosicionY(Number(posGuardada));
+}, [navigate]);
 
     const posGuardada = localStorage.getItem("posicionY");
     if (posGuardada) setPosicionY(Number(posGuardada));
