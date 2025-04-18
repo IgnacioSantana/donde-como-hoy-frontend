@@ -9,7 +9,7 @@ function PanelRestaurante() {
   const [restaurante, setRestaurante] = useState(null);
   const [mensaje, setMensaje] = useState("");
   const [posicionY, setPosicionY] = useState(50);
-  const [imagen, setImagen] = useState(localStorage.getItem("imagen") || "");
+  const [imagen, setImagen] = useState("");
   const [fechaSeleccionada, setFechaSeleccionada] = useState(new Date());
   const [menuDelDia, setMenuDelDia] = useState(null);
 
@@ -28,6 +28,7 @@ function PanelRestaurante() {
       .then(data => {
         if (data) {
           setRestaurante(data);
+          console.log("✅ Restaurante con imagen desde backend:", data);
           if (data.imagen) {
             setImagen(data.imagen);
             localStorage.setItem("imagen", data.imagen);
