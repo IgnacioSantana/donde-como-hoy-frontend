@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 function CrearMenu() {
   const navigate = useNavigate();
-  const [fecha, setFecha] = useState(new Date().toISOString().split("T")[0]);
+  const [fecha, setFecha] = useState(new Date().toLocaleDateString('sv-SE'));
   const [precio, setPrecio] = useState("");
   const [primeros, setPrimeros] = useState(["", "", "", ""]);
   const [segundos, setSegundos] = useState(["", "", "", ""]);
