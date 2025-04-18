@@ -31,24 +31,21 @@ export default function Login() {
       });
 
       if (response.ok) {
-        const data = await response.json();
+  const data = await response.json();
 
-        localStorage.setItem("restaurante", JSON.stringify({
-          _id: data.restauranteId,
-          nombre: data.nombre
-        localStorage.removeItem("imagen");
-        localStorage.setItem("restaurante", JSON.stringify({
-          _id: data.restauranteId,
-          nombre: data.nombre
-        }));
+  localStorage.removeItem("imagen"); // 🔥 Limpia imagen anterior
 
-        }));
+  localStorage.setItem("restaurante", JSON.stringify({
+    _id: data.restauranteId,
+    nombre: data.nombre
+  }));
 
-        setMensaje("✅ Inicio de sesión exitoso.");
-        setTipoMensaje("exito");
+  setMensaje("✅ Inicio de sesión exitoso.");
+  setTipoMensaje("exito");
 
-        setTimeout(() => navigate("/panel"), 1500);
-      } else {
+  setTimeout(() => navigate("/panel"), 1500);
+}
+    else {
         const errorData = await response.json();
         const errorMsg = errorData.message || "❌ Credenciales incorrectas.";
         setMensaje(`❌ ${errorMsg}`);
