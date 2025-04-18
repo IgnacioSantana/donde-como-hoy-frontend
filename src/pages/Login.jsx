@@ -36,6 +36,12 @@ export default function Login() {
         localStorage.setItem("restaurante", JSON.stringify({
           _id: data.restauranteId,
           nombre: data.nombre
+        localStorage.removeItem("imagen");
+        localStorage.setItem("restaurante", JSON.stringify({
+          _id: data.restauranteId,
+          nombre: data.nombre
+        }));
+
         }));
 
         setMensaje("✅ Inicio de sesión exitoso.");
