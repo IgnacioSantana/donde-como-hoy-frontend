@@ -18,7 +18,12 @@ if (!restaurante || (!restaurante._id && !restaurante.id)) {
   setMensaje("❌ Restaurante no autenticado");
   return;
 }
-
+    
+    if (!restaurante || (!restaurante._id && !restaurante.id)) {
+  setMensaje("❌ Restaurante no autenticado");
+  return;
+}
+    
     const nuevoMenu = {
   restauranteId: restaurante._id || restaurante.id,
   fecha,
