@@ -34,7 +34,7 @@ export default function Login() {
         const data = await response.json();
 
         localStorage.setItem("restaurante", JSON.stringify({
-          id: data.restauranteId,
+          _id: data.restauranteId,
           nombre: data.nombre
         }));
 
