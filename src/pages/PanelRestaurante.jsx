@@ -86,20 +86,16 @@ function PanelRestaurante() {
   if (file && file.type.startsWith("image/")) {
     const reader = new FileReader();
     reader.onloadend = async () => {
-      const base64 = reader.result;
-      setImagen(base64);
-      localStorage.setItem("imagen", base64);
+      const nuevaImagen = reader.result;
+      setImagen(nuevaImagen);
+      localStorage.setItem("imagen", nuevaImagen);
 
-      if (restaurante && restaurante._id) {
-        try {
-          await fetch(`https://donde-como-hoy-backend.onrender.com/restaurantes/${restaurante._id}/imagen`, {
-            method: "PUT",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ imagen: base64 }),
-          });
-        } catch (error) {
-          console.error("❌ Error al guardar imagen en el backend:", error);
-        }
+      if (restaurante?._id) {
+        await fetch(`https://donde-como-hoy-backend.onrender.com/restaurantes/${restaurante._id}/imagen`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ imagen: nuevaImagen }),
+        });
       }
     };
     reader.readAsDataURL(file);
