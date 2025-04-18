@@ -4,6 +4,7 @@ import Calendar from "react-calendar";
 import 'react-calendar/dist/Calendar.css';
 import { ArrowUpTrayIcon } from "@heroicons/react/24/outline";
 import { CakeIcon, SparklesIcon, BanknotesIcon } from "@heroicons/react/24/solid";
+import imageCompression from "browser-image-compression";
 
 function PanelRestaurante() {
   const navigate = useNavigate();
@@ -55,10 +56,17 @@ function PanelRestaurante() {
       .catch(() => setMenuDelDia(null));
   }, [fechaSeleccionada, restaurante]);
 
-  const handleDrop = (e) => {
-    e.preventDefault();
-    const file = e.dataTransfer.files[0];
-    if (file && file.type.startsWith("image/")) {
+  const handleDrop = async (e) => {
+  e.preventDefault();
+  const file = e.dataTransfer.files[0];
+  if (file && file.type.startsWith("image/")) {
+    try {
+      const compressedFile = await imageCompression(file, {
+        maxSizeMB: 0.5,
+        maxWidthOrHeight: 1200,
+        useWebWorker: true,
+      });
+
       const reader = new FileReader();
       reader.onloadend = async () => {
         const nuevaImagen = reader.result;
@@ -72,13 +80,23 @@ function PanelRestaurante() {
           });
         }
       };
-      reader.readAsDataURL(file);
+      reader.readAsDataURL(compressedFile);
+    } catch (error) {
+      console.error("❌ Error al comprimir imagen:", error);
     }
-  };
+  }
+};
+  
+  const handleArchivoManual = async (e) => {
+  const file = e.target.files[0];
+  if (file && file.type.startsWith("image/")) {
+    try {
+      const compressedFile = await imageCompression(file, {
+        maxSizeMB: 0.5,
+        maxWidthOrHeight: 1200,
+        useWebWorker: true,
+      });
 
-  const handleArchivoManual = (e) => {
-    const file = e.target.files[0];
-    if (file && file.type.startsWith("image/")) {
       const reader = new FileReader();
       reader.onloadend = async () => {
         const nuevaImagen = reader.result;
@@ -92,10 +110,13 @@ function PanelRestaurante() {
           });
         }
       };
-      reader.readAsDataURL(file);
+      reader.readAsDataURL(compressedFile);
+    } catch (error) {
+      console.error("❌ Error al comprimir imagen:", error);
     }
-  };
-
+  }
+};
+  
   const handleMouseMove = (e) => {
     if (arrastrando.current && contenedorImagen.current) {
       const bounds = contenedorImagen.current.getBoundingClientRect();
