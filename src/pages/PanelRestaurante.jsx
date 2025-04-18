@@ -18,32 +18,31 @@ function PanelRestaurante() {
   const inputArchivo = useRef(null);
 
   useEffect(() => {
-  const datos = localStorage.getItem("restaurante");
+    const datos = localStorage.getItem("restaurante");
 
-  if (datos) {
-    const restauranteLocal = JSON.parse(datos);
+    if (datos) {
+      const restauranteLocal = JSON.parse(datos);
 
-    fetch(`https://donde-como-hoy-backend.onrender.com/restaurantes/${restauranteLocal._id}`)
-      .then(res => res.ok ? res.json() : null)
-      .then(data => {
-        if (data) {
-          setRestaurante(data);
-          console.log("✅ Restaurante con imagen desde backend:", data);
-          if (data.imagen) {
-            setImagen(data.imagen);
+      fetch(`https://donde-como-hoy-backend.onrender.com/restaurantes/${restauranteLocal._id}`)
+        .then(res => res.ok ? res.json() : null)
+        .then(data => {
+          if (data) {
+            setRestaurante(data);
+            if (data.imagen) {
+              setImagen(data.imagen);
+            }
+          } else {
+            navigate("/login");
           }
-        } else {
-          navigate("/login");
-        }
-      })
-      .catch(() => navigate("/login"));
-  } else {
-    navigate("/login");
-  }
+        })
+        .catch(() => navigate("/login"));
+    } else {
+      navigate("/login");
+    }
 
-  const posGuardada = localStorage.getItem("posicionY");
-  if (posGuardada) setPosicionY(Number(posGuardada));
-}, [navigate]);
+    const posGuardada = localStorage.getItem("posicionY");
+    if (posGuardada) setPosicionY(Number(posGuardada));
+  }, [navigate]);
 
   useEffect(() => {
     if (!restaurante) return;
@@ -56,48 +55,45 @@ function PanelRestaurante() {
   }, [fechaSeleccionada, restaurante]);
 
   const handleDrop = (e) => {
-  e.preventDefault();
-  const file = e.dataTransfer.files[0];
-  if (file && file.type.startsWith("image/")) {
-    const reader = new FileReader();
-    reader.onloadend = async () => {
-      const nuevaImagen = reader.result;
-      setImagen(nuevaImagen);
-      // Eliminar esta línea para evitar el QuotaExceededError:
-      // localStorage.setItem("imagen", nuevaImagen);
+    e.preventDefault();
+    const file = e.dataTransfer.files[0];
+    if (file && file.type.startsWith("image/")) {
+      const reader = new FileReader();
+      reader.onloadend = async () => {
+        const nuevaImagen = reader.result;
+        setImagen(nuevaImagen);
 
-      if (restaurante?._id) {
-        await fetch(`https://donde-como-hoy-backend.onrender.com/restaurantes/${restaurante._id}/imagen`, {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ imagen: nuevaImagen }),
-        });
-      }
-    };
-    reader.readAsDataURL(file);
-  }
-};
+        if (restaurante?._id) {
+          await fetch(`https://donde-como-hoy-backend.onrender.com/restaurantes/${restaurante._id}/imagen`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ imagen: nuevaImagen }),
+          });
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
   const handleArchivoManual = (e) => {
-  const file = e.target.files[0];
-  if (file && file.type.startsWith("image/")) {
-    const reader = new FileReader();
-    reader.onloadend = async () => {
-      const nuevaImagen = reader.result;
-      setImagen(nuevaImagen);
-      localStorage.setItem("imagen", nuevaImagen);
+    const file = e.target.files[0];
+    if (file && file.type.startsWith("image/")) {
+      const reader = new FileReader();
+      reader.onloadend = async () => {
+        const nuevaImagen = reader.result;
+        setImagen(nuevaImagen);
 
-      if (restaurante?._id) {
-        await fetch(`https://donde-como-hoy-backend.onrender.com/restaurantes/${restaurante._id}/imagen`, {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ imagen: nuevaImagen }),
-        });
-      }
-    };
-    reader.readAsDataURL(file);
-  }
-};
+        if (restaurante?._id) {
+          await fetch(`https://donde-como-hoy-backend.onrender.com/restaurantes/${restaurante._id}/imagen`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ imagen: nuevaImagen }),
+          });
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
   const handleMouseMove = (e) => {
     if (arrastrando.current && contenedorImagen.current) {
@@ -109,6 +105,23 @@ function PanelRestaurante() {
     }
   };
 
+  const handleSalir = async () => {
+    if (restaurante?._id && imagen) {
+      try {
+        await fetch(`https://donde-como-hoy-backend.onrender.com/restaurantes/${restaurante._id}/imagen`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ imagen }),
+        });
+      } catch (error) {
+        console.error("❌ Error al guardar imagen al salir:", error);
+      }
+    }
+
+    localStorage.clear();
+    navigate("/login");
+  };
+
   const fechaKey = fechaSeleccionada.toLocaleDateString('sv-SE'); // formato YYYY-MM-DD
 
   return (
@@ -117,47 +130,24 @@ function PanelRestaurante() {
         <img src="/logo.png" alt="Logo ¿Dónde Como Hoy?" className="w-40 mx-auto mb-6" />
 
         <div className="flex flex-col sm:flex-row justify-between items-center mb-6 gap-4 sm:gap-2">
-  <h1 className="text-4xl font-extrabold text-gray-900">Bienvenido, {restaurante?.nombre}</h1>
+          <h1 className="text-4xl font-extrabold text-gray-900">Bienvenido, {restaurante?.nombre}</h1>
 
-  <div className="flex gap-2">
-    <button
-      onClick={async () => {
-        if (!restaurante || !imagen) return;
+          <div className="flex gap-2">
+            <Link
+              to="/crear-menu"
+              className="bg-black text-white px-5 py-2 rounded-full font-semibold hover:bg-gray-800 transition"
+            >
+              Crear Menú
+            </Link>
 
-        try {
-          await fetch(`https://donde-como-hoy-backend.onrender.com/restaurantes/${restaurante._id}/imagen`, {
-            method: "PUT",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ imagen }),
-          });
-          setMensaje("✅ Imagen guardada correctamente");
-        } catch (err) {
-          setMensaje("❌ Error al guardar la imagen");
-        }
-      }}
-      className="bg-black text-white px-5 py-2 rounded-full font-semibold hover:bg-gray-800 transition"
-    >
-      Guardar
-    </button>
-
-    <button
-      onClick={() => {
-        localStorage.clear();
-        navigate("/login");
-      }}
-      className="bg-red-600 text-white px-5 py-2 rounded-full font-semibold hover:bg-red-700 transition"
-    >
-      Salir
-    </button>
-
-    <Link
-      to="/crear-menu"
-      className="bg-gray-700 text-white px-5 py-2 rounded-full font-semibold hover:bg-gray-800 transition"
-    >
-      Crear Menú
-    </Link>
-  </div>
-</div>
+            <button
+              onClick={handleSalir}
+              className="bg-white text-black border border-gray-300 px-5 py-2 rounded-full font-semibold hover:bg-gray-200 transition"
+            >
+              Salir
+            </button>
+          </div>
+        </div>
 
         <p className="mb-6 text-gray-600 text-lg">Administra tu restaurante y tus menús de forma fácil y rápida.</p>
 
