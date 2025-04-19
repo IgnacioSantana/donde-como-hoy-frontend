@@ -13,7 +13,8 @@
     "react-router-dom": "^6.3.0",
     "react-calendar": "^4.0.0",
     "@heroicons/react": "^2.1.1",
-    "lucide-react": "^0.303.0"
+    "lucide-react": "^0.303.0",
+    "cloudinary": "^1.41.3"
   },
   
   "devDependencies": {
