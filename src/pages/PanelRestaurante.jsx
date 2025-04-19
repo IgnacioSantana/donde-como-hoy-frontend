@@ -3,7 +3,7 @@ import { useNavigate, Link } from "react-router-dom";
 import Calendar from "react-calendar";
 import 'react-calendar/dist/Calendar.css';
 import { ArrowUpTrayIcon } from "@heroicons/react/24/outline";
-import { BreadSlice, Coffee, Cake, CupSoda } from 'lucide-react';
+import { Sandwich, Coffee, Cake, CupSoda } from 'lucide-react';
 import imageCompression from "browser-image-compression";
 
 function PanelRestaurante() {
